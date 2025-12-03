@@ -20,22 +20,45 @@ fun main() {
 
         current = when (direction) {
             'L' -> {
-                (current - amount).mod(size)
+                val result = loopLeft(current, amount)
+                zero += result.second
+                result.first
             }
 
             'R' -> {
-                (current + amount).mod(size)
+                val result = loopRight(current, amount)
+                zero += result.second
+                result.first
             }
 
             else -> error("Invalid Direction $direction")
         }
 
         println("To: $current")
-
-        if (current == 0) zero++
         println()
     }
 
     println("Zeroes: $zero")
+}
 
+fun loopLeft(current: Int, amount: Int): Pair<Int, Int> {
+    var zero = 0
+    var newCurrent = current
+    repeat(amount) {
+        newCurrent -= 1
+        if (newCurrent < 0) newCurrent = 99
+        if (newCurrent == 0) zero++
+    }
+    return newCurrent to zero
+}
+
+fun loopRight(current: Int, amount: Int): Pair<Int, Int> {
+    var zero = 0
+    var newCurrent = current
+    repeat(amount) {
+        newCurrent += 1
+        if (newCurrent > 99) newCurrent = 0
+        if (newCurrent == 0) zero++
+    }
+    return newCurrent to zero
 }
